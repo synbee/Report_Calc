@@ -1,21 +1,4 @@
 import pandas as pd
-from PyInquirer import prompt
-import os
-
-
-def select_file():
-    files = [f for f in os.listdir('CSVs') if os.path.isfile(os.path.join('CSVs', f))]
-    questions = [
-        {
-            'type': 'list',
-            'name': 'file',
-            'message': 'Select a file:',
-            'choices': files
-        }
-    ]
-    
-    answers = prompt(questions)
-    return os.path.join('CSVs', answers['file'])
 
 def calc_avg_queue_time(file_path, rows):
     pd.options.display.max_rows = rows
@@ -56,7 +39,6 @@ def calc_avg_queue_time(file_path, rows):
 
     print(diff)
     print(f"---Queue time: {avg_q}")
-
 
 def total_task_count(file_path):
     sheet = pd.read_csv(file_path)
