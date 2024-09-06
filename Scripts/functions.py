@@ -1,8 +1,8 @@
 import pandas as pd
 
 
-def calc_avg_queue_time(file_path):
-    pd.options.display.max_rows = 9999
+def calc_avg_queue_time(file_path, rows):
+    pd.options.display.max_rows = rows
 
     sheet = pd.read_csv(file_path)
 
@@ -42,8 +42,8 @@ def calc_avg_queue_time(file_path):
     print(f"---Queue time: {avg_q}")
 
 
-def total_task_count(file_path):
+def total_task_count(file_path, rows):
+    pd.options.display.max_rows = rows
     sheet = pd.read_csv(file_path)
     task_count = sum(sheet['Task Count'])
     print(f"---Total Tasks: {task_count}")
-total_task_count("CSVs/Daily_report_full.csv")
