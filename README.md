@@ -1,5 +1,5 @@
 # Report_Calc
--> install all modules using
+-> install all dependencies using
 ```
 pip install -r requirements.txt
 ```
