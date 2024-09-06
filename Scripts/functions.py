@@ -42,8 +42,32 @@ def calc_avg_queue_time(file_path, rows):
     print(f"---Queue time: {avg_q}")
 
 
-def total_task_count(file_path, rows):
-    pd.options.display.max_rows = rows
+def total_task_count(file_path):
     sheet = pd.read_csv(file_path)
-    task_count = sum(sheet['Task Count'])
-    print(f"---Total Tasks: {task_count}")
+    task_count = sheet['Task Count'][pd.notnull(sheet['Task Count'])].sum()
+    print(f"---Total Tasks: {task_count:.0f}")
+
+def total_frame_count(file_path):
+    sheet = pd.read_csv(file_path)
+    frame_count = sheet['Frame Count'][pd.notnull(sheet['Frame Count'])].sum()
+    print(f"---Total Frames: {frame_count:.0f}")
+
+
+def total_task_render_time(file_path):
+    pd.options.display.max_rows = 9999
+    sheet = pd.read_csv(file_path)
+    
+    sheet['Total Task Render Time'] = sheet['Total Task Render Time'].str.replace(r'(\d+):(\d+):(\d+):(\d+)', r'\1 days \2:\3:\4', regex=True)
+    sheet['Total Task Render Time'] = pd.to_timedelta(sheet['Total Task Render Time'], errors='coerce')
+    
+    total_render_time = sheet['Total Task Render Time'].sum()
+    
+    total_seconds = total_render_time.total_seconds()
+    total_hours, remainder = divmod(total_seconds, 3600)
+    total_minutes, total_seconds = divmod(remainder, 60)
+
+    total_hours = int(total_hours)
+    total_minutes = int(total_minutes)
+    total_seconds = int(total_seconds)
+
+    print(f"Total Task Render Time: {total_hours:02}:{total_minutes:02}:{total_seconds:02}")

@@ -1,3 +1,3 @@
 from functions import*
 
-print(calc_avg_queue_time("CSVs/Daily_report_full.csv", 9))
+print(total_task_render_time("CSVs/4th_sep_report.csv"))
