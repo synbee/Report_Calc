@@ -1,10 +1,10 @@
 import pandas as pd
 
 
-def calc_avg_queue_time(csv_file):
+def calc_avg_queue_time(file_path):
     pd.options.display.max_rows = 9999
 
-    sheet = pd.read_csv(csv_file)
+    sheet = pd.read_csv(file_path)
 
     sub_dt = pd.to_datetime(sheet['Submit Date Time'],
                             format="%Y/%m/%d %H:%M:%S",
@@ -39,6 +39,11 @@ def calc_avg_queue_time(csv_file):
     avg_q = f"{int(avg_hr):02}:{int(avg_min):02}:{int(avg_sec):02}"
 
     print(diff)
-    print(avg_q)
+    print(f"---Queue time: {avg_q}")
 
-calc_avg_queue_time("CSVs/Job_rep_sample.csv")
+
+def total_task_count(file_path):
+    sheet = pd.read_csv(file_path)
+    task_count = sum(sheet['Task Count'])
+    print(f"---Total Tasks: {task_count}")
+total_task_count("CSVs/Daily_report_full.csv")
