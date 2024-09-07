@@ -83,5 +83,4 @@ def total_file_size(file_path):
         power = math.pow(1024, i)
         size = round(bytes / power, 2)
         return f"{size} {size_name[i]}"
-    convert_size(bytes)
     print(convert_size(bytes))
