@@ -1,3 +1,3 @@
 from functions import*
-calc = calc_avg_queue_time("")
+calc = total_file_size("CSVs/4th_sep_report.csv")
 print(calc)

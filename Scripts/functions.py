@@ -1,4 +1,5 @@
 import pandas as pd
+import math
 
 def calc_avg_queue_time(file_path, rows):
     pd.options.display.max_rows = rows
@@ -69,3 +70,18 @@ def total_task_render_time(file_path):
     total_seconds = int(total_seconds)
 
     print(f"Total Task Render Time: {total_hours:02}:{total_minutes:02}:{total_seconds:02}")
+
+
+def total_file_size(file_path):
+    sheet = pd.read_csv(file_path)
+    bytes = sheet['Total Output File Size (Bytes)'][pd.notnull(sheet['Total Output File Size (Bytes)'])].sum()
+    def convert_size(bytes):
+        if bytes == 0:
+            return "0B"
+        size_name = ("B", "KB", "MB", "GB", "TB")
+        i = int(math.floor(math.log(bytes, 1024)))
+        power = math.pow(1024, i)
+        size = round(bytes / power, 2)
+        return f"{size} {size_name[i]}"
+    convert_size(bytes)
+    print(convert_size(bytes))
