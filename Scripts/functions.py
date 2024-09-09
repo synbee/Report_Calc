@@ -2,40 +2,27 @@ import pandas as pd
 import math
 
 
-def calc_avg_queue_time(file_path, rows):
-    pd.options.display.max_rows = rows
-
+def calc_avg_queue_time(file_path):
     sheet = pd.read_csv(file_path)
 
-    sub_dt = pd.to_datetime(
-        sheet["Submit Date Time"], format="%Y/%m/%d %H:%M:%S", errors="coerce"
-    )
-    strt_dt = pd.to_datetime(
-        sheet["Start Date Time"], format="%Y/%m/%d %H:%M:%S", errors="coerce"
-    )
+    sub_dt = pd.to_datetime(sheet["Submit Date Time"], errors="coerce")
+    strt_dt = pd.to_datetime(sheet["Start Date Time"], errors="coerce")
 
     sheet["Queue Time"] = (sub_dt - strt_dt).abs()
 
-    sheet["Q_hr"] = sheet["Queue Time"].apply(
-        lambda x: x.components.hours if pd.notnull(x) else 0
-    )
-    sheet["Q_min"] = sheet["Queue Time"].apply(
-        lambda x: x.components.minutes if pd.notnull(x) else 0
-    )
-    sheet["Q_sec"] = sheet["Queue Time"].apply(
-        lambda x: x.components.seconds if pd.notnull(x) else 0
-    )
+    sheet.dropna(subset=["Queue Time"], inplace=True)
 
-    diff = sheet[["Submit Date Time", "Start Date Time", "Q_hr", "Q_min", "Q_sec"]]
+    total_seconds = sheet["Queue Time"].dt.total_seconds()
 
-    avg_hr = sheet["Q_hr"].mean()
-    avg_min = sheet["Q_min"].mean()
-    avg_sec = sheet["Q_sec"].mean()
+    avg_seconds = total_seconds.mean()
 
-    avg_q = f"{int(avg_hr):02}:{int(avg_min):02}:{int(avg_sec):02}"
+    avg_hr = int(avg_seconds // 3600)
+    avg_min = int((avg_seconds % 3600) // 60)
+    avg_sec = int(avg_seconds % 60)
 
-    print(diff)
-    print(f"---Queue time: {avg_q}")
+    avg_q = f"{avg_hr:02}:{avg_min:02}:{avg_sec:02}"
+
+    print(f"---Queue Time: {avg_q}")
 
 
 def total_task_count(file_path):
@@ -72,7 +59,7 @@ def total_task_render_time(file_path):
     total_seconds = int(total_seconds)
 
     print(
-        f"Total Task Render Time: {total_hours:02}:{total_minutes:02}:{total_seconds:02}"
+        f"---Total Task Render Time: {total_hours:02}:{total_minutes:02}:{total_seconds:02}"
     )
 
 
@@ -89,6 +76,6 @@ def total_file_size(file_path):
         i = int(math.floor(math.log(bytes, 1024)))
         power = math.pow(1024, i)
         size = round(bytes / power, 2)
-        return f"{size} {size_name[i]}"
+        return f"---Total File Size: {size} {size_name[i]}"
 
     print(convert_size(bytes))
