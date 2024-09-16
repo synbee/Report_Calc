@@ -79,3 +79,9 @@ def total_file_size(file_path):
         return f"---Total File Size: {size} {size_name[i]}"
 
     print(convert_size(bytes))
+
+def total_jobs(file_path):
+    sheet = pd.read_csv(file_path)
+    x = len(sheet)
+    formated_x = (x - 2)
+    print(f"---Total Jobs {formated_x}")

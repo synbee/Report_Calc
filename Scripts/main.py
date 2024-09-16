@@ -1,6 +1,10 @@
-from functions import*
-total_task_count("CSVs/31-aug - Sheet1.csv")
-total_frame_count("CSVs/31-aug - Sheet1.csv")
-total_task_render_time("CSVs/31-aug - Sheet1.csv")
-calc_avg_queue_time("CSVs/31-aug - Sheet1.csv")
-total_file_size("CSVs/31-aug - Sheet1.csv")
+from functions import *
+
+path = "CSVs/09 - Sheet1.csv"
+
+total_jobs(path)
+total_task_count(path)
+total_frame_count(path)
+total_task_render_time(path)
+calc_avg_queue_time(path)
+total_file_size(path)
